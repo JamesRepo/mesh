@@ -1,14 +1,16 @@
 ---
+import PasswordGate from '../components/PasswordGate.astro';
+
 interface Props {
-    title: string;
-    description?: string;
-    class?: string;
+	title: string;
+	description?: string;
+	class?: string;
 }
 
 const {
-    title,
-    description = "Mesh is a community art project space.",
-    class: className = ''
+	title,
+	description = "Mesh is a community art project space.",
+	class: className = ''
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
@@ -42,6 +44,7 @@ const currentPath = Astro.url.pathname;
     </style>
 </head>
 <body class={className}>
+<PasswordGate />
 <a href="#main" class="skip-link">Skip to content</a>
 
 <slot />
