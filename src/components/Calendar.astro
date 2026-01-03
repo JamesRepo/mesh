@@ -1,0 +1,424 @@
+---
+import type { CalendarEvent as CalendarEventType } from '../data/mockEvents';
+
+interface Props {
+	events: CalendarEventType[];
+}
+
+const { events } = Astro.props;
+---
+
+<div class="calendar" data-events={JSON.stringify(events)}>
+    <div class="calendar-header">
+        <button class="calendar-nav calendar-nav--prev" aria-label="Previous month" data-action="prev">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M12 4L6 10L12 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+
+        <h2 class="calendar-title">
+            <span class="calendar-month"></span>
+            <span class="calendar-year"></span>
+        </h2>
+
+        <button class="calendar-nav calendar-nav--next" aria-label="Next month" data-action="next">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M8 4L14 10L8 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+    </div>
+
+    <div class="calendar-grid">
+        <div class="calendar-day-header">Mon</div>
+        <div class="calendar-day-header">Tue</div>
+        <div class="calendar-day-header">Wed</div>
+        <div class="calendar-day-header">Thu</div>
+        <div class="calendar-day-header">Fri</div>
+        <div class="calendar-day-header">Sat</div>
+        <div class="calendar-day-header">Sun</div>
+        <div class="calendar-days"></div>
+    </div>
+</div>
+
+<script>
+	interface CalendarEvent {
+		id: string;
+		name: string;
+		date: string;
+		time: string;
+		ticketLink?: string;
+	}
+
+	const MONTHS = [
+		'January', 'February', 'March', 'April', 'May', 'June',
+		'July', 'August', 'September', 'October', 'November', 'December'
+	];
+
+	function getCalendarDays(year: number, month: number) {
+		const firstDay = new Date(year, month, 1);
+		const lastDay = new Date(year, month + 1, 0);
+		const daysInMonth = lastDay.getDate();
+		const startingDay = (firstDay.getDay() + 6) % 7;
+
+		const days: { date: number; isCurrentMonth: boolean; fullDate: string }[] = [];
+
+		const prevMonth = month === 0 ? 11 : month - 1;
+		const prevYear = month === 0 ? year - 1 : year;
+		const prevMonthLastDay = new Date(prevYear, prevMonth + 1, 0).getDate();
+
+		for (let i = startingDay - 1; i >= 0; i--) {
+			const date = prevMonthLastDay - i;
+			days.push({
+				date,
+				isCurrentMonth: false,
+				fullDate: `${prevYear}-${String(prevMonth + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`
+			});
+		}
+
+		for (let i = 1; i <= daysInMonth; i++) {
+			days.push({
+				date: i,
+				isCurrentMonth: true,
+				fullDate: `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
+			});
+		}
+
+		const nextMonth = month === 11 ? 0 : month + 1;
+		const nextYear = month === 11 ? year + 1 : year;
+		const remaining = 42 - days.length;
+
+		for (let i = 1; i <= remaining; i++) {
+			days.push({
+				date: i,
+				isCurrentMonth: false,
+				fullDate: `${nextYear}-${String(nextMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
+			});
+		}
+
+		return days;
+	}
+
+	function createEventCard(event: CalendarEvent, compact: boolean): string {
+		const ticketHtml = event.ticketLink
+			? `<a href="${event.ticketLink}" class="event-ticket" target="_blank" rel="noopener noreferrer" aria-label="Get tickets for ${event.name}">
+          Tickets
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M1 9L9 1M9 1H3M9 1V7" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </a>`
+			: '';
+
+		return `
+      <div class="event-card ${compact ? 'event-card--compact' : ''}">
+        <span class="event-name">${event.name}</span>
+        <span class="event-time">${event.time}</span>
+        ${ticketHtml}
+      </div>
+    `;
+	}
+
+	document.querySelectorAll('.calendar').forEach(calendar => {
+		const eventsData: CalendarEvent[] = JSON.parse(calendar.getAttribute('data-events') || '[]');
+		const prevBtn = calendar.querySelector('[data-action="prev"]');
+		const nextBtn = calendar.querySelector('[data-action="next"]');
+		const monthEl = calendar.querySelector('.calendar-month');
+		const yearEl = calendar.querySelector('.calendar-year');
+		const daysContainer = calendar.querySelector('.calendar-days');
+
+		const now = new Date();
+		let year = now.getFullYear();
+		let month = now.getMonth();
+
+		const today = new Date();
+		const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+		function getEventsForDate(date: string): CalendarEvent[] {
+			return eventsData.filter(event => event.date === date);
+		}
+
+		function renderCalendar() {
+			if (!monthEl || !yearEl || !daysContainer) return;
+
+			monthEl.textContent = MONTHS[month];
+			yearEl.textContent = String(year);
+
+			const days = getCalendarDays(year, month);
+
+			daysContainer.innerHTML = days.map(day => {
+				const dayEvents = getEventsForDate(day.fullDate);
+				const isToday = day.fullDate === todayString;
+				const hasMultipleEvents = dayEvents.length > 1;
+
+				const classes = [
+					'calendar-day',
+					!day.isCurrentMonth ? 'calendar-day--other' : '',
+					isToday ? 'calendar-day--today' : '',
+					dayEvents.length > 0 ? 'calendar-day--has-events' : ''
+				].filter(Boolean).join(' ');
+
+				const eventsHtml = dayEvents.length > 0
+					? `<div class="calendar-day-events ${dayEvents.length === 1 ? 'calendar-day-events--single' : ''}">
+              ${dayEvents.map(event => createEventCard(event, hasMultipleEvents)).join('')}
+            </div>`
+					: '';
+
+				return `
+          <div class="${classes}" data-date="${day.fullDate}">
+            <span class="calendar-day-number">${day.date}</span>
+            ${eventsHtml}
+          </div>
+        `;
+			}).join('');
+		}
+
+		prevBtn?.addEventListener('click', () => {
+			month--;
+			if (month < 0) {
+				month = 11;
+				year--;
+			}
+			renderCalendar();
+		});
+
+		nextBtn?.addEventListener('click', () => {
+			month++;
+			if (month > 11) {
+				month = 0;
+				year++;
+			}
+			renderCalendar();
+		});
+
+		// Initial render
+		renderCalendar();
+	});
+</script>
+
+<style>
+    .calendar {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-lg);
+        padding: 0 var(--space-sm);
+    }
+
+    .calendar-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        background: transparent;
+        border: 1px solid var(--chrome-dark);
+        border-radius: 2px;
+        color: var(--chrome-mid);
+        cursor: pointer;
+        transition: all var(--transition-base);
+    }
+
+    .calendar-nav:hover {
+        border-color: var(--chrome-mid);
+        color: var(--chrome-light);
+    }
+
+    .calendar-nav:focus-visible {
+        outline: 2px solid var(--nav-hover);
+        outline-offset: 4px;
+    }
+
+    .calendar-title {
+        display: flex;
+        gap: var(--space-sm);
+        font-size: var(--text-xl);
+        font-weight: 200;
+        letter-spacing: 0.15em;
+        color: var(--chrome-light);
+    }
+
+    .calendar-year {
+        color: var(--chrome-mid);
+    }
+
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 1px;
+        background: var(--border-subtle);
+        border: 1px solid var(--border-subtle);
+        border-radius: 2px;
+    }
+
+    .calendar-day-header {
+        padding: var(--space-sm) var(--space-xs);
+        background: var(--void-soft);
+        font-size: var(--text-xs);
+        font-weight: 400;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        text-align: center;
+    }
+
+    .calendar-days {
+        display: contents;
+    }
+
+    :global(.calendar-day) {
+        min-height: 120px;
+        padding: var(--space-sm);
+        background: var(--void);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+    }
+
+    :global(.calendar-day--other) {
+        background: var(--void-soft);
+    }
+
+    :global(.calendar-day--other .calendar-day-number) {
+        color: var(--text-muted);
+    }
+
+    :global(.calendar-day--today .calendar-day-number) {
+        color: var(--accent-warm);
+        font-weight: 400;
+    }
+
+    :global(.calendar-day-number) {
+        font-size: var(--text-sm);
+        font-weight: 300;
+        color: var(--text-secondary);
+        letter-spacing: 0.05em;
+    }
+
+    :global(.calendar-day-events) {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+    }
+
+    :global(.calendar-day--has-events .calendar-day-events) {
+        margin-top: var(--space-xs);
+    }
+
+    :global(.calendar-day-events--single) {
+        display: flex;
+    }
+
+    :global(.calendar-day-events--single > *) {
+        flex: 1;
+    }
+
+    /* Event card styles */
+    :global(.event-card) {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+        padding: var(--space-sm) var(--space-md);
+        background: var(--void-lighter);
+        border: 1px solid var(--border-visible);
+        border-radius: 2px;
+        height: 100%;
+        transition: background var(--transition-base);
+    }
+
+    :global(.event-card:hover) {
+        background: #1a1a1a;
+    }
+
+    :global(.event-card--compact) {
+        padding: var(--space-xs) var(--space-sm);
+        gap: 2px;
+    }
+
+    :global(.event-name) {
+        font-size: var(--text-sm);
+        font-weight: 400;
+        color: var(--text-primary);
+        letter-spacing: 0.05em;
+        line-height: 1.3;
+    }
+
+    :global(.event-card--compact .event-name) {
+        font-size: var(--text-xs);
+    }
+
+    :global(.event-time) {
+        font-size: var(--text-xs);
+        color: var(--text-secondary);
+        letter-spacing: 0.05em;
+    }
+
+    :global(.event-card--compact .event-time) {
+        font-size: 0.65rem;
+    }
+
+    :global(.event-ticket) {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: var(--text-xs);
+        color: var(--accent-warm);
+        letter-spacing: 0.08em;
+        margin-top: var(--space-xs);
+        transition: color var(--transition-base);
+        text-decoration: none;
+    }
+
+    :global(.event-card--compact .event-ticket) {
+        font-size: 0.65rem;
+        margin-top: 2px;
+    }
+
+    :global(.event-ticket:hover) {
+        color: var(--chrome-light);
+    }
+
+    :global(.event-ticket svg) {
+        opacity: 0.7;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        :global(.calendar-day) {
+            min-height: 100px;
+            padding: var(--space-xs);
+        }
+
+        .calendar-day-header {
+            padding: var(--space-xs);
+            font-size: 0.65rem;
+        }
+
+        .calendar-title {
+            font-size: var(--text-lg);
+        }
+    }
+
+    @media (max-width: 480px) {
+        :global(.calendar-day) {
+            min-height: 80px;
+        }
+
+        :global(.calendar-day-number) {
+            font-size: var(--text-xs);
+        }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+        .calendar-nav,
+        :global(.event-card) {
+            transition: none;
+        }
+    }
+</style>

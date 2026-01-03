@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Calendar from '../components/Calendar.astro';
+import { mockEvents } from '../data/mockEvents';
+---
+
+<BaseLayout
+        title="Mesh Tings"
+        description="Community events at Mesh. Live music, art exhibitions, workshops, and more."
+>
+    <PageHeader
+            title="Mesh Tings"
+            subtitle="What's happening at Mesh. Live music, exhibitions, workshops, and community gatherings."
+    />
+
+    <main id="main" class="container container--wide">
+        <section class="calendar-section">
+            <Calendar events={mockEvents} />
+        </section>
+
+        <section class="calendar-info">
+            <p>
+                All events take place at Mesh unless otherwise noted.
+                <a href="/space#contact">Get in touch</a> if you'd like to host something here.
+            </p>
+        </section>
+    </main>
+</BaseLayout>
+
+<style>
+    .calendar-section {
+        margin-bottom: var(--space-3xl);
+    }
+
+    .calendar-info {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+        padding: var(--space-xl) 0;
+        border-top: 1px solid var(--border-subtle);
+    }
+
+    .calendar-info p {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        letter-spacing: 0.05em;
+    }
+
+    .calendar-info a {
+        color: var(--chrome-light);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    .calendar-info a:hover {
+        color: var(--accent-warm);
+    }
+</style>
