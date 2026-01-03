@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ChromeLogo from '../components/ChromeLogo.astro';
+import AmbientGlow from '../components/AmbientGlow.astro';
+import Navigation from '../components/Navigation.astro';
+---
+
+<BaseLayout
+        title="Mesh — Community Art Space."
+        description="Mesh is a community art project space."
+        class="landing-page"
+>
+    <main id="main" class="landing-container">
+        <AmbientGlow intensity="strong" size="large" />
+
+        <div class="landing-content">
+            <ChromeLogo size="hero" animated={true} />
+            <Navigation variant="landing" />
+        </div>
+    </main>
+</BaseLayout>
+
+<style>
+    .landing-page {
+        overflow: hidden;
+    }
+
+    .landing-container {
+        height: 100vh;
+        height: 100dvh; /* Dynamic viewport height for mobile */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .landing-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: var(--z-base);
+    }
+
+    .location-whisper {
+        position: absolute;
+        bottom: var(--space-xl);
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: var(--text-xs);
+        font-weight: 300;
+        letter-spacing: 0.3em;
+        color: var(--text-muted);
+        opacity: 0.4;
+        transition: opacity var(--transition-slow);
+    }
+
+    .landing-container:hover .location-whisper {
+        opacity: 0.6;
+    }
+
+    /* Entry animation */
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .landing-content {
+        animation: fadeUp 1.2s ease-out;
+    }
+
+    .location-whisper {
+        animation: fadeUp 1.5s ease-out 0.5s both;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+        .location-whisper {
+            bottom: var(--space-lg);
+        }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+        .landing-content,
+        .location-whisper {
+            animation: none;
+        }
+    }
+</style>

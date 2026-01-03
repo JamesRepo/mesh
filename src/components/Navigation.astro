@@ -1,0 +1,146 @@
+---
+interface Props {
+	variant?: 'landing' | 'page';
+}
+
+const { variant = 'landing' } = Astro.props;
+
+const links = [
+	{
+    	href: 'https://calendar.google.com/calendar/embed?src=YOUR_CALENDAR_ID',
+    	label: 'Mesh Tings',
+    	external: true,
+    	description: 'Community events calendar'
+  	},
+  	{
+		href: '/space',
+		label: 'The Space',
+		external: false,
+		description: 'About our space'
+	  },
+	  {
+		href: '/studio',
+		label: 'Studio Booking',
+		external: false,
+		description: 'Reserve the studio'
+	  }
+];
+---
+
+<nav 
+  	class:list={['main-nav', `main-nav--${variant}`]}
+  	aria-label="Main navigation"
+>
+  	{links.map(link => (
+    <a
+		href={link.href}
+		class="nav-link"
+		target={link.external ? '_blank' : undefined}
+		rel={link.external ? 'noopener noreferrer' : undefined}
+		aria-label={link.description}
+    >
+	<span class="nav-link__text">{link.label}</span>
+		{link.external && (
+			<span class="nav-link__external" aria-hidden="true">
+				<svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+					<path d="M1 9L9 1M9 1H3M9 1V7" stroke="currentColor" stroke-width="1.5"/>
+				</svg>
+			</span>
+		)}
+			</a>
+	))}
+</nav>
+
+<style>
+	.main-nav {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 24px;
+		position: relative;
+		z-index: var(--z-base);
+	}
+  
+  	.main-nav--landing {
+    	margin-top: 80px;
+  	}
+  
+  	.main-nav--page {
+    	flex-direction: row;
+    	gap: 32px;
+    	margin-top: 0;
+  	}
+  
+  	.nav-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		font-size: var(--text-sm);
+		font-weight: 300;
+		letter-spacing: 0.15em;
+		text-decoration: none;
+		color: var(--nav-default);
+		transition: color var(--transition-base);
+		position: relative;
+		padding: 8px 16px;
+  	}
+  
+  	.nav-link::after {
+		content: '';
+		position: absolute;
+		bottom: 4px;
+		left: 50%;
+		width: 0;
+		height: 1px;
+		background: var(--nav-hover);
+		transition: width var(--transition-base), left var(--transition-base);
+  	}
+  
+  	.nav-link:hover {
+    	color: var(--nav-hover);
+  	}
+  
+  	.nav-link:hover::after {
+    	width: 60%;
+    	left: 20%;
+  	}
+  
+  	.nav-link:focus-visible {
+    	outline: 1px solid var(--nav-hover);
+    	outline-offset: 4px;
+  	}
+  
+  	.nav-link:focus-visible::after {
+    	display: none;
+  	}
+  
+  	.nav-link__external {
+    	opacity: 0.5;
+    	transition: opacity var(--transition-fast);
+  	}
+  
+  	.nav-link:hover .nav-link__external {
+    	opacity: 1;
+  	}
+  
+  	/* Responsive */
+  	@media (max-width: 640px) {
+    	.main-nav--landing {
+      		margin-top: 60px;
+      		gap: 20px;
+    	}
+    
+    	.main-nav--page {
+      		flex-direction: column;
+      		gap: 16px;
+    	}
+  	}
+  
+  	/* Reduced motion */
+  	@media (prefers-reduced-motion: reduce) {
+    	.nav-link,
+    	.nav-link::after {
+      		transition: none;
+    	}
+  	}
+</style>

@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ChromeLogo from '../components/ChromeLogo.astro';
+---
+
+<BaseLayout
+        title="Lost in the Void — Mesh"
+        description="Page not found"
+        class="error-page"
+>
+    <main id="main" class="error-container">
+        <div class="error-content">
+            <span class="error-code">404</span>
+            <h1 class="error-title">Lost in the void</h1>
+            <p class="error-message">
+                The page you're looking for has wandered off. Perhaps it was never here to begin with.
+            </p>
+            <a href="/" class="error-link">
+                <span>Return to</span>
+                <ChromeLogo size="small" as="span" animated={false} />
+            </a>
+        </div>
+    </main>
+</BaseLayout>
+
+<style>
+    .error-page {
+        overflow: hidden;
+    }
+
+    .error-container {
+        height: 100vh;
+        height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .error-content {
+        text-align: center;
+        padding: var(--space-xl);
+    }
+
+    .error-code {
+        display: block;
+        font-size: var(--text-hero);
+        font-weight: 100;
+        letter-spacing: 0.2em;
+        color: var(--void-lighter);
+        line-height: 1;
+        margin-bottom: var(--space-lg);
+    }
+
+    .error-title {
+        font-size: var(--text-xl);
+        font-weight: 200;
+        letter-spacing: 0.1em;
+        color: var(--chrome-mid);
+        margin-bottom: var(--space-md);
+    }
+
+    .error-message {
+        font-size: var(--text-base);
+        color: var(--text-secondary);
+        max-width: 400px;
+        margin: 0 auto var(--space-2xl);
+        line-height: 1.7;
+    }
+
+    .error-link {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-sm);
+        color: var(--nav-default);
+        font-size: var(--text-sm);
+        letter-spacing: 0.1em;
+        transition: color var(--transition-base);
+    }
+
+    .error-link:hover {
+        color: var(--nav-hover);
+    }
+</style>

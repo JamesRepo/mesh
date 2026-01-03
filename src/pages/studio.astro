@@ -1,0 +1,401 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import FormField from '../components/FormField.astro';
+import Button from '../components/Button.astro';
+---
+
+<BaseLayout
+        title="Book the Space — Mesh"
+        description="Book Mesh for your next project, event, or gathering. Flexible rates, community-friendly approach."
+>
+    <PageHeader
+            title="Studio Bookings"
+            subtitle="Fully functioning in-house recording studio available for hire."
+    />
+
+    <main id="main" class="container container--narrow">
+        <Section title="Availability" id="availability">
+            <p>
+                Check our calendar below to see what's open. We try to stay flexible, so if the time you need isn't showing as available, get in touch anyway — we might be able to work something out.
+            </p>
+
+            <div class="calendar-embed" aria-label="Availability calendar">
+                <iframe
+                    src="https://calendar.google.com/calendar/embed?src=YOUR_CALENDAR_ID&ctz=Europe%2FLondon"
+                    style="border: 0"
+                    width="100%"
+                    height="400"
+                    frameborder="0"
+                    scrolling="no"
+                    title="Mesh availability calendar"
+                ></iframe>
+            </div>
+        </Section>
+
+        <Section title="The Studio" id="studio">
+            <div class="studio-details">
+                <div class="studio-info">
+                    <p>
+                        The Studio is flexible and adaptable.
+                    </p>
+
+                    <dl class="specs-list">
+                        <div class="spec">
+                            <dt>Size</dt>
+                            <dd>Approximately 50 sq foot</dd>
+                        </div>
+                        <div class="spec">
+                            <dt>Capacity</dt>
+                            <dd>Up to 5 people</dd>
+                        </div>
+                        <div class="spec">
+                            <dt>Equipment</dt>
+                            <dd>Mic, Speakers etc</dd>
+                        </div>
+                    </dl>
+                </div>
+                <div class="studio-uses">
+                    <h3 class="uses-title">Good to know</h3>
+                    <ul class="uses-list">
+                        <li>We ask for a deposit to secure your booking, refundable if you cancel with 48+ hours notice</li>
+                        <li>Working hours of the Studio is 9am to 6pm</li>
+                        <li>You're welcome to bring your own equipment — just let us know what you're planning</li>
+                        <li>For regular or recurring bookings, we can work out a better rate</li>
+                        <li>We have an in-house producer who can mix and master</li>
+                    </ul>
+                </div>
+            </div>
+        </Section>
+
+        <Section title="Rates & Terms" id="rates">
+            <p>
+                We keep things simple and community-focused. If cost is a barrier to your project, talk to us — we'd rather work something out than have the space sit empty.
+            </p>
+
+            <div class="rates-grid">
+                <div class="rate-card">
+                    <h3 class="rate-title">Hourly</h3>
+                    <div class="rate-price">£15<span class="rate-unit">/hour</span></div>
+                    <p class="rate-desc">Minimum 2 hours. Good for rehearsals, recordings, and short sessions.</p>
+                </div>
+
+                <div class="rate-card">
+                    <h3 class="rate-title">Half Day</h3>
+                    <div class="rate-price">£50<span class="rate-unit">/4 hours</span></div>
+                    <p class="rate-desc">Morning, afternoon, or evening slot. Includes setup and pack-down time.</p>
+                </div>
+
+                <div class="rate-card">
+                    <h3 class="rate-title">Full Day</h3>
+                    <div class="rate-price">£90<span class="rate-unit">/8 hours</span></div>
+                    <p class="rate-desc">Anything that needs a full day.</p>
+                </div>
+
+                <div class="rate-card rate-card--special">
+                    <h3 class="rate-title">Community Rate</h3>
+                    <div class="rate-price">Flexible</div>
+                    <p class="rate-desc">Running something for the community? A not-for-profit event? Let's talk. We want this space to be used.</p>
+                </div>
+            </div>
+        </Section>
+
+        <Section title="Request a Booking" id="request">
+            <p class="booking-intro">
+                Fill in the details below and we'll get back to you within a day or two. Don't worry if you're not sure about everything yet — we can figure out the details together.
+            </p>
+
+            <form class="booking-form" action="#" method="POST" name="booking">
+                <div class="form-row">
+                    <FormField
+                            label="Your name"
+                            name="name"
+                            type="text"
+                            required={true}
+                            placeholder="What should we call you?"
+                    />
+
+                    <FormField
+                            label="Email"
+                            name="email"
+                            type="email"
+                            required={true}
+                            placeholder="your@email.com"
+                    />
+                </div>
+
+                <div class="form-row">
+                    <FormField
+                            label="Preferred date(s)"
+                            name="dates"
+                            type="text"
+                            required={true}
+                            placeholder="e.g., 15th March or several options"
+                    />
+
+                    <FormField
+                            label="Time & duration"
+                            name="time"
+                            type="text"
+                            required={true}
+                            placeholder="e.g., 2pm-6pm or full day"
+                    />
+                </div>
+
+                <FormField
+                        label="What would you like to use the space for?"
+                        name="purpose"
+                        type="textarea"
+                        required={true}
+                        placeholder="Tell us about your project, event, or plans. The more we know, the better we can help."
+                        rows={4}
+                />
+
+                <FormField
+                        label="Any other requirements?"
+                        name="requirements"
+                        type="textarea"
+                        required={false}
+                        placeholder="Let us know if there's anything we should be aware of to make the space work for you."
+                        rows={3}
+                />
+
+                <FormField
+                        label="How did you hear about Mesh?"
+                        name="source"
+                        type="select"
+                        required={false}
+                        placeholder="Select one"
+                        options={[
+							{ value: 'word-of-mouth', label: 'Word of mouth' },
+							{ value: 'event', label: 'Attended an event here' },
+							{ value: 'other', label: 'Other' }
+						]}
+                />
+
+                <div class="form-actions">
+                    <Button type="submit" variant="primary" size="medium">
+                        Send booking request
+                    </Button>
+                    <p class="form-note">
+                        We'll respond within 48 hours. Check your spam folder if you don't hear back.
+                    </p>
+                </div>
+            </form>
+        </Section>
+    </main>
+</BaseLayout>
+
+<style>
+    .calendar-embed {
+        margin-top: var(--space-lg);
+    }
+
+    .calendar-placeholder {
+        aspect-ratio: 16 / 9;
+        max-height: 400px;
+        background: var(--void-soft);
+        border: 1px dashed var(--border-visible);
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-md);
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+        letter-spacing: 0.05em;
+    }
+
+    .calendar-note a {
+        color: var(--nav-hover);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    .rates-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--space-lg);
+        margin-top: var(--space-xl);
+        margin-bottom: var(--space-2xl);
+    }
+
+    .rate-card {
+        padding: var(--space-lg);
+        background: var(--void-soft);
+        border: 1px solid var(--border-subtle);
+        border-radius: 4px;
+        transition: border-color var(--transition-base);
+    }
+
+    .rate-card:hover {
+        border-color: var(--border-visible);
+    }
+
+    .rate-card--special {
+        border-color: var(--accent-warm);
+        border-style: dashed;
+    }
+
+    .rate-title {
+        font-size: var(--text-sm);
+        font-weight: 300;
+        letter-spacing: 0.1em;
+        color: var(--chrome-mid);
+        margin-bottom: var(--space-sm);
+    }
+
+    .rate-price {
+        font-size: var(--text-2xl);
+        font-weight: 200;
+        color: var(--chrome-light);
+        margin-bottom: var(--space-sm);
+    }
+
+    .rate-unit {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+    }
+
+    .rate-desc {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    .terms {
+        margin-top: var(--space-xl);
+    }
+
+    .terms-title {
+        font-size: var(--text-sm);
+        font-weight: 400;
+        letter-spacing: 0.05em;
+        color: var(--chrome-mid);
+        margin-bottom: var(--space-md);
+        margin-top: var(--space-xl);
+    }
+
+    .terms-title:first-child {
+        margin-top: 0;
+    }
+
+    .terms-list {
+        list-style: none;
+    }
+
+    .terms-list li {
+        padding: var(--space-xs) 0;
+        padding-left: var(--space-lg);
+        position: relative;
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    .terms-list li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: var(--nav-default);
+    }
+
+    .booking-intro {
+        margin-bottom: var(--space-xl);
+        color: var(--text-secondary);
+    }
+
+    .booking-form {
+        max-width: 600px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+    }
+
+    @media (min-width: 640px) {
+        .form-row {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .form-actions {
+        margin-top: var(--space-xl);
+    }
+
+    .form-note {
+        margin-top: var(--space-md);
+        font-size: var(--text-xs);
+        color: var(--text-muted);
+    }
+
+    .specs-list {
+        margin-top: var(--space-lg);
+    }
+
+    .spec {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+        padding: var(--space-sm) 0;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .studio-details {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-2xl);
+        margin-bottom: var(--space-2xl);
+    }
+
+    @media (min-width: 768px) {
+        .studio-details {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .spec:last-child {
+        border-bottom: none;
+    }
+
+    .spec dt {
+        font-weight: 400;
+        color: var(--chrome-mid);
+        min-width: 100px;
+    }
+
+    .spec dd {
+        flex: 1;
+        color: var(--text-primary);
+    }
+
+    .uses-title {
+        font-size: var(--text-sm);
+        font-weight: 300;
+        letter-spacing: 0.1em;
+        color: var(--chrome-mid);
+        margin-bottom: var(--space-md);
+    }
+
+    .uses-list {
+        list-style: none;
+    }
+
+    .uses-list li {
+        padding: var(--space-xs) 0;
+        color: var(--text-secondary);
+        position: relative;
+        padding-left: var(--space-md);
+    }
+
+    .uses-list li::before {
+        content: '—';
+        position: absolute;
+        left: 0;
+        color: var(--nav-default);
+    }
+
+</style>

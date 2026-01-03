@@ -1,0 +1,94 @@
+---
+interface Props {
+	size?: 'small' | 'medium' | 'large' | 'hero';
+	animated?: boolean;
+	as?: 'h1' | 'span' | 'div';
+}
+
+const {
+	size = 'hero',
+	animated = true,
+	as: Element = 'h1'
+} = Astro.props;
+
+const sizeClasses = {
+	small: 'logo--small',
+	medium: 'logo--medium',
+	large: 'logo--large',
+	hero: 'logo--hero'
+};
+---
+
+<Element
+        class:list={[
+			'chrome-logo',
+			sizeClasses[size],
+			{ 'chrome-logo--animated': animated }
+		]}
+>
+    Mesh
+</Element>
+
+<style>
+    .chrome-logo {
+        font-weight: 200;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        background: linear-gradient(
+                135deg,
+                var(--chrome-dark) 0%,
+                var(--chrome-light) 25%,
+                var(--chrome-mid) 50%,
+                var(--chrome-light) 75%,
+                var(--chrome-dark) 100%
+        );
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        user-select: none;
+        position: relative;
+        z-index: var(--z-base);
+    }
+
+    .chrome-logo--animated {
+        animation: shimmer 10s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+        0%, 100% { background-position: 0 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    /* Size variants */
+    .logo--hero {
+        font-size: var(--text-hero);
+    }
+
+    .logo--large {
+        font-size: var(--text-3xl);
+    }
+
+    .logo--medium {
+        font-size: var(--text-2xl);
+    }
+
+    .logo--small {
+        font-size: var(--text-xl);
+        letter-spacing: 0.2em;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+        .chrome-logo {
+            letter-spacing: 0.2em;
+        }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+        .chrome-logo--animated {
+            animation: none;
+        }
+    }
+</style>

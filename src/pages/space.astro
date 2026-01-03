@@ -1,0 +1,229 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import FormField from '../components/FormField.astro';
+import Button from '../components/Button.astro';
+---
+
+<BaseLayout
+        title="The Space"
+        description="Mesh is a welcoming creative space for artists, musicians, and makers. Learn about our studio, equipment, and community."
+>
+    <PageHeader
+            title="The Space"
+            subtitle="A place to create, rehearse, record, exhibit, and gather. All are welcome."
+    />
+
+    <main id="main" class="container container--narrow">
+        <Section title="What Mesh Is" id="about">
+            <p>
+                Mesh is a community art project space in Glasgow. We're a home for artists, musicians, makers, and anyone with something to create or share.
+            </p>
+            <p>
+                We believe good things happen when creative people have space to work, experiment, and connect. Whether you're recording, rehearsing, exhibiting, workshopping, or just need somewhere to think — you're welcome here.
+            </p>
+            <p>
+                This isn't a pristine gallery or a corporate venue. It's a working space, well-loved and well-used. Come make something.
+            </p>
+        </Section>
+
+        <Section title="The Event Space" id="studio">
+            <div class="studio-details">
+                <div class="studio-info">
+                    <p>
+                        Our space is flexible and adaptable. Over the years it's hosted gigs, exhibitions, recording sessions, rehearsals, workshops, community gatherings, and everything in between.
+                    </p>
+
+                    <dl class="specs-list">
+                        <div class="spec">
+                            <dt>Size</dt>
+                            <dd>Approximately 800 sq ft of usable space</dd>
+                        </div>
+                        <div class="spec">
+                            <dt>Capacity</dt>
+                            <dd>Up to 50 people for events, 8-10 for workshops</dd>
+                        </div>
+                        <div class="spec">
+                            <dt>Equipment</dt>
+                            <dd>PA system, basic lighting, projector, tables & chairs</dd>
+                        </div>
+                        <div class="spec">
+                            <dt>Access</dt>
+                            <dd>Step-free entrance, accessible toilet on site</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="studio-gallery" aria-label="Space gallery">
+                <div class="gallery-placeholder">
+                    <span>Photos coming soon</span>
+                </div>
+            </div>
+        </Section>
+
+        <Section title="Community Guidelines" id="guidelines">
+            <p>
+                Mesh runs on mutual respect and shared responsibility. When you use the space, you're part of the community.
+            </p>
+            <ul class="guidelines-list">
+                <li><strong>Leave it as you found it</strong> — or better. Clean up, put things back, be thoughtful.</li>
+                <li><strong>Respect the neighbours</strong> — we share walls and streets with others. Keep noise reasonable after 10pm.</li>
+                <li><strong>All are welcome</strong> — this is an inclusive space. Discrimination, harassment, or exclusionary behaviour has no place here.</li>
+                <li><strong>Take care</strong> — of yourself, each other, and the space. If something breaks, let us know.</li>
+            </ul>
+        </Section>
+
+        <Section title="Get in Touch" id="contact">
+            <p class="contact-intro">
+                Got a question? An idea? Something you'd like to do here? We'd love to hear from you. Half-formed thoughts welcome — we can figure it out together.
+            </p>
+
+            <form class="enquiry-form" action="#" method="POST" name="enquiry">
+                <FormField
+                        label="Your name"
+                        name="name"
+                        type="text"
+                        required={true}
+                        placeholder="What should we call you?"
+                />
+
+                <FormField
+                        label="Email"
+                        name="email"
+                        type="email"
+                        required={true}
+                        placeholder="your@email.com"
+                />
+
+                <FormField
+                        label="What are you thinking?"
+                        name="message"
+                        type="textarea"
+                        required={true}
+                        placeholder="Tell us what you're imagining. It doesn't need to be polished."
+                        rows={5}
+                />
+
+                <div class="form-actions">
+                    <Button type="submit" variant="primary" size="medium">
+                        Send message
+                    </Button>
+                </div>
+            </form>
+        </Section>
+    </main>
+</BaseLayout>
+
+<style>
+    .studio-details {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-2xl);
+        margin-bottom: var(--space-2xl);
+    }
+
+    @media (min-width: 768px) {
+        .studio-details {
+            grid-template-columns: 2fr 1fr;
+        }
+    }
+
+    .specs-list {
+        margin-top: var(--space-lg);
+    }
+
+    .spec {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+        padding: var(--space-sm) 0;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .spec:last-child {
+        border-bottom: none;
+    }
+
+    .spec dt {
+        font-weight: 400;
+        color: var(--chrome-mid);
+        min-width: 100px;
+    }
+
+    .spec dd {
+        flex: 1;
+        color: var(--text-primary);
+    }
+
+    .uses-title {
+        font-size: var(--text-sm);
+        font-weight: 300;
+        letter-spacing: 0.1em;
+        color: var(--chrome-mid);
+        margin-bottom: var(--space-md);
+    }
+
+    .uses-list {
+        list-style: none;
+    }
+
+    .uses-list li {
+        padding: var(--space-xs) 0;
+        color: var(--text-secondary);
+        position: relative;
+        padding-left: var(--space-md);
+    }
+
+    .uses-list li::before {
+        content: '—';
+        position: absolute;
+        left: 0;
+        color: var(--nav-default);
+    }
+
+    .studio-gallery {
+        margin-top: var(--space-lg);
+    }
+
+    .gallery-placeholder {
+        aspect-ratio: 16 / 9;
+        background: var(--void-soft);
+        border: 1px dashed var(--border-visible);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+        letter-spacing: 0.05em;
+    }
+
+    .guidelines-list {
+        list-style: none;
+    }
+
+    .guidelines-list li {
+        padding: var(--space-md) 0;
+        border-bottom: 1px solid var(--border-subtle);
+        line-height: 1.7;
+    }
+
+    .guidelines-list li:last-child {
+        border-bottom: none;
+    }
+
+    .contact-intro {
+        margin-bottom: var(--space-xl);
+        color: var(--text-secondary);
+    }
+
+    .enquiry-form {
+        max-width: 500px;
+    }
+
+    .form-actions {
+        margin-top: var(--space-xl);
+    }
+</style>

@@ -1,0 +1,188 @@
+/* 
+ * Mesh - Global Styles
+ * A dark, atmospheric design system for Glasgow's community art space
+ */
+
+/* CSS Reset */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Design Tokens */
+:root {
+    /* Core palette - the void and chrome */
+    --void: #000000;
+    --void-soft: #0a0a0a;
+    --void-lighter: #111111;
+
+    /* Chrome gradient spectrum */
+    --chrome-lightest: #f0f0f0;
+    --chrome-light: #e8e8e8;
+    --chrome-mid: #a8a8a8;
+    --chrome-dark: #606060;
+    --chrome-darkest: #404040;
+
+    /* Navigation states */
+    --nav-default: #3a3a3a;
+    --nav-hover: #909090;
+    --nav-active: #c0c0c0;
+
+    /* Text hierarchy */
+    --text-primary: #e0e0e0;
+    --text-secondary: #888888;
+    --text-muted: #555555;
+
+    /* Accents */
+    --accent-warm: #d4a574;
+    --accent-cool: #7a9eb8;
+
+    /* Functional */
+    --focus-ring: rgba(144, 144, 144, 0.6);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-visible: rgba(255, 255, 255, 0.15);
+
+    /* Spacing scale */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 2rem;
+    --space-xl: 4rem;
+    --space-2xl: 6rem;
+    --space-3xl: 8rem;
+
+    /* Typography */
+    --font-display: 'Outfit', system-ui, sans-serif;
+    --font-body: 'Outfit', system-ui, sans-serif;
+
+    /* Font sizes - fluid typography */
+    --text-xs: clamp(0.7rem, 0.65rem + 0.25vw, 0.8rem);
+    --text-sm: clamp(0.8rem, 0.75rem + 0.25vw, 0.9rem);
+    --text-base: clamp(0.9rem, 0.85rem + 0.25vw, 1rem);
+    --text-lg: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+    --text-xl: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    --text-2xl: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem);
+    --text-3xl: clamp(2rem, 1.5rem + 2.5vw, 4rem);
+    --text-hero: clamp(4rem, 3rem + 8vw, 10rem);
+
+    /* Transitions */
+    --transition-fast: 150ms ease;
+    --transition-base: 300ms ease;
+    --transition-slow: 500ms ease;
+    --transition-slower: 800ms ease;
+
+    /* Z-index scale */
+    --z-base: 1;
+    --z-elevated: 10;
+    --z-overlay: 100;
+    --z-modal: 1000;
+}
+
+/* Base styles */
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--void);
+    color: var(--text-primary);
+    font-family: var(--font-body), serif;
+    font-weight: 300;
+    line-height: 1.6;
+    font-size: var(--text-base);
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+    outline: 2px solid var(--nav-hover);
+    outline-offset: 4px;
+}
+
+/* Selection */
+::selection {
+    background: rgba(144, 144, 144, 0.3);
+    color: var(--chrome-light);
+}
+
+/* Links */
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--transition-base);
+}
+
+a:hover {
+    color: var(--nav-hover);
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Skip link for accessibility */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--chrome-light);
+    color: var(--void);
+    padding: 12px 24px;
+    font-size: var(--text-sm);
+    font-weight: 400;
+    z-index: var(--z-modal);
+    transition: top var(--transition-base);
+    border-radius: 0 0 4px 4px;
+}
+
+.skip-link:focus {
+    top: 0;
+    outline: none;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Utility classes */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+
+.container--narrow {
+    max-width: 800px;
+}
+
+.container--wide {
+    max-width: 1400px;
+}

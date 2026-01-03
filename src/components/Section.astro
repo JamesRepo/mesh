@@ -1,0 +1,69 @@
+---
+interface Props {
+	title?: string;
+	id?: string;
+	class?: string;
+}
+
+const { title, id, class: className } = Astro.props;
+---
+
+<section
+        class:list={['content-section', className]}
+        id={id}
+>
+	{title && <h2 class="section-title">{title}</h2>}
+    <div class="section-content">
+        <slot />
+    </div>
+</section>
+
+<style>
+    .content-section {
+        margin-bottom: var(--space-3xl);
+    }
+
+    .content-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .section-title {
+        font-size: var(--text-lg);
+        font-weight: 300;
+        letter-spacing: 0.1em;
+        color: var(--chrome-mid);
+        margin-bottom: var(--space-lg);
+        padding-bottom: var(--space-sm);
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .section-content {
+        color: var(--text-primary);
+        line-height: 1.8;
+    }
+
+    .section-content :global(p) {
+        margin-bottom: var(--space-md);
+    }
+
+    .section-content :global(p:last-child) {
+        margin-bottom: 0;
+    }
+
+    .section-content :global(strong) {
+        font-weight: 400;
+        color: var(--chrome-light);
+    }
+
+    .section-content :global(a) {
+        color: var(--chrome-light);
+        text-decoration: underline;
+        text-decoration-color: var(--nav-default);
+        text-underline-offset: 3px;
+        transition: text-decoration-color var(--transition-base);
+    }
+
+    .section-content :global(a:hover) {
+        text-decoration-color: var(--chrome-light);
+    }
+</style>

@@ -1,0 +1,75 @@
+---
+interface Props {
+    intensity?: 'subtle' | 'medium' | 'strong';
+    size?: 'small' | 'medium' | 'large';
+}
+
+const {
+    intensity = 'subtle',
+    size = 'large'
+} = Astro.props;
+
+const intensityMap = {
+    subtle: '0.03',
+    medium: '0.05',
+    strong: '0.08'
+};
+
+const sizeMap = {
+    small: { width: '300px', height: '150px' },
+    medium: { width: '450px', height: '225px' },
+    large: { width: '600px', height: '300px' }
+};
+---
+
+<div
+        class="ambient-glow"
+        style={`
+    --glow-opacity: ${intensityMap[intensity]};
+    --glow-width: ${sizeMap[size].width};
+    --glow-height: ${sizeMap[size].height};
+  `}
+        aria-hidden="true"
+></div>
+
+<style>
+    .ambient-glow {
+        position: absolute;
+        width: var(--glow-width);
+        height: var(--glow-height);
+        background: radial-gradient(
+                ellipse at center,
+                rgba(255, 255, 255, var(--glow-opacity)) 0%,
+                transparent 70%
+        );
+        pointer-events: none;
+        animation: breathe 8s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+        0%, 100% {
+            opacity: 0.5;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+        .ambient-glow {
+            animation: none;
+            opacity: 0.7;
+        }
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+        .ambient-glow {
+            width: 100vw;
+            height: 200px;
+        }
+    }
+</style>

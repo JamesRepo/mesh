@@ -1,0 +1,125 @@
+---
+interface Props {
+	title: string;
+	subtitle?: string;
+}
+
+const { title, subtitle } = Astro.props;
+---
+
+<header class="page-header">
+    <div class="container">
+        <nav class="page-nav" aria-label="Breadcrumb">
+            <a href="/" class="back-link" aria-label="Return to home">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <path d="M12 4L6 10L12 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="back-logo">Mesh</span>
+            </a>
+
+            <div class="page-nav-links">
+                <a href="/space" class="page-nav-link">The Space</a>
+                <a href="/studio" class="page-nav-link">Studio Booking</a>
+            </div>
+        </nav>
+
+        <div class="page-title-block">
+            <h1 class="page-title">{title}</h1>
+			{subtitle && <p class="page-subtitle">{subtitle}</p>}
+        </div>
+    </div>
+</header>
+
+<style>
+    .page-header {
+        padding: var(--space-lg) 0;
+        border-bottom: 1px solid var(--border-subtle);
+        margin-bottom: var(--space-2xl);
+    }
+
+    .page-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-2xl);
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-sm);
+        color: var(--nav-default);
+        transition: color var(--transition-base);
+        padding: var(--space-sm);
+        margin-left: calc(-1 * var(--space-sm));
+    }
+
+    .back-link:hover {
+        color: var(--nav-hover);
+    }
+
+    .back-logo {
+        font-size: var(--text-sm);
+        font-weight: 200;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        background: linear-gradient(
+                135deg,
+                var(--chrome-dark) 0%,
+                var(--chrome-light) 50%,
+                var(--chrome-dark) 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .page-nav-links {
+        display: flex;
+        gap: var(--space-lg);
+    }
+
+    .page-nav-link {
+        font-size: var(--text-xs);
+        font-weight: 300;
+        letter-spacing: 0.1em;
+        color: var(--nav-default);
+        transition: color var(--transition-base);
+    }
+
+    .page-nav-link:hover {
+        color: var(--nav-hover);
+    }
+
+    .page-title-block {
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .page-title {
+        font-size: var(--text-3xl);
+        font-weight: 200;
+        letter-spacing: 0.1em;
+        color: var(--chrome-light);
+        margin-bottom: var(--space-md);
+    }
+
+    .page-subtitle {
+        font-size: var(--text-lg);
+        font-weight: 300;
+        color: var(--text-secondary);
+        line-height: 1.7;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+        .page-nav-links {
+            display: none;
+        }
+
+        .page-title {
+            font-size: var(--text-2xl);
+        }
+    }
+</style>

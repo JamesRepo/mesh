@@ -1,0 +1,122 @@
+---
+interface Props {
+	type?: 'button' | 'submit';
+	variant?: 'primary' | 'secondary' | 'ghost';
+	size?: 'small' | 'medium' | 'large';
+	class?: string;
+}
+
+const {
+	type = 'button',
+	variant = 'primary',
+	size = 'medium',
+	class: className
+} = Astro.props;
+---
+
+<button
+        type={type}
+        class:list={[
+			'btn',
+			`btn--${variant}`,
+			`btn--${size}`,
+			className
+		]}
+>
+    <slot />
+</button>
+
+<style>
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-sm);
+        font-family: var(--font-body), serif;
+        font-weight: 300;
+        letter-spacing: 0.1em;
+        border: none;
+        cursor: pointer;
+        transition: all var(--transition-base);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Sizes */
+    .btn--small {
+        padding: var(--space-sm) var(--space-md);
+        font-size: var(--text-xs);
+    }
+
+    .btn--medium {
+        padding: var(--space-md) var(--space-xl);
+        font-size: var(--text-sm);
+    }
+
+    .btn--large {
+        padding: var(--space-lg) var(--space-2xl);
+        font-size: var(--text-base);
+    }
+
+    /* Primary variant - chrome gradient */
+    .btn--primary {
+        background: linear-gradient(
+                135deg,
+                var(--chrome-dark) 0%,
+                var(--chrome-mid) 50%,
+                var(--chrome-dark) 100%
+        );
+        color: var(--void);
+        border-radius: 2px;
+    }
+
+    .btn--primary:hover {
+        background: linear-gradient(
+                135deg,
+                var(--chrome-mid) 0%,
+                var(--chrome-light) 50%,
+                var(--chrome-mid) 100%
+        );
+    }
+
+    .btn--primary:active {
+        transform: scale(0.98);
+    }
+
+    /* Secondary variant - outline */
+    .btn--secondary {
+        background: transparent;
+        color: var(--chrome-mid);
+        border: 1px solid var(--chrome-dark);
+        border-radius: 2px;
+    }
+
+    .btn--secondary:hover {
+        border-color: var(--chrome-mid);
+        color: var(--chrome-light);
+    }
+
+    /* Ghost variant - minimal */
+    .btn--ghost {
+        background: transparent;
+        color: var(--nav-default);
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .btn--ghost:hover {
+        color: var(--nav-hover);
+    }
+
+    /* Focus state */
+    .btn:focus-visible {
+        outline: 2px solid var(--nav-hover);
+        outline-offset: 4px;
+    }
+
+    /* Disabled state */
+    .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+</style>
