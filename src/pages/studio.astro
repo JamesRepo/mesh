@@ -4,6 +4,8 @@ import PageHeader from '../components/PageHeader.astro';
 import Section from '../components/Section.astro';
 import FormField from '../components/FormField.astro';
 import Button from '../components/Button.astro';
+import AvailabilityCalendar from '../components/AvailabilityCalendar.astro';
+import { mockBookings } from '../data/mockBookings';
 ---
 
 <BaseLayout
@@ -21,17 +23,7 @@ import Button from '../components/Button.astro';
                 Check our calendar below to see what's open. We try to stay flexible, so if the time you need isn't showing as available, get in touch anyway — we might be able to work something out.
             </p>
 
-            <div class="calendar-embed" aria-label="Availability calendar">
-                <iframe
-                    src="https://calendar.google.com/calendar/embed?src=YOUR_CALENDAR_ID&ctz=Europe%2FLondon"
-                    style="border: 0"
-                    width="100%"
-                    height="400"
-                    frameborder="0"
-                    scrolling="no"
-                    title="Mesh availability calendar"
-                ></iframe>
-            </div>
+            <AvailabilityCalendar bookings={mockBookings} />
         </Section>
 
         <Section title="The Studio" id="studio">
@@ -69,7 +61,7 @@ import Button from '../components/Button.astro';
             </div>
         </Section>
 
-        <Section title="Rates & Terms" id="rates">
+        <Section title="Rates" id="rates">
             <p>
                 We keep things simple and community-focused. If cost is a barrier to your project, talk to us — we'd rather work something out than have the space sit empty.
             </p>
